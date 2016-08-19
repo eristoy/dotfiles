@@ -1,3 +1,5 @@
 .vim/tmp/*
+!.vim/tmp/pad
 .vim/backup/*
+!.vin/backup/pad
 .DS_Store
