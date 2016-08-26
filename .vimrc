@@ -54,8 +54,10 @@ set wildmode=list:longest
 set incsearch
 set laststatus=2
 set lazyredraw
-"set list
-set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+set list
+"#set listchars=eol:$,tab:>-,space:25B8,trail:~,extends:>,precedes:<
+set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:⎵,extends:>,precedes:<
+",space:▸
 set matchtime=5
 set report=0
 set ruler
@@ -78,16 +80,18 @@ set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 "              | +-- rodified flag in square brackets
 "              +-- full path to file in the buffer
 set completeopt=menuone
+"========Tab settings
+set tabstop=4
+set shiftwidth=4
 set expandtab
+set shiftround
+set smarttab
+
 set formatoptions=rq
 set ignorecase
 set infercase
 set nowrap
-set shiftround
 set smartcase
-set shiftwidth=4
-set softtabstop=4
-set tabstop=8
 
 "Folding
 set foldenable
@@ -106,7 +110,7 @@ let tlist_php_settings = 'php;c:class;d:constant;f:function'
 
 "Mappings
 
-set pastetoggle=<f11>
+set pastetoggle=<F2>
 noremap <S-space> <C-b>
 noremap <space> <C-f>
 nmap <C-N><C-N> :set invnumber<CR>
@@ -118,3 +122,25 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
 endif
+"====[ Show when lines extend past column 80 ]=================================>-<=====================
+
+highlight ColorColumn ctermfg=208 ctermbg=Black
+
+function! MarkMargin (on)
+    if exists('b:MarkMargin')
+        try
+            call matchdelete(b:MarkMargin)
+        catch /./
+        endtry
+        unlet b:MarkMargin
+    endif
+    if a:on
+        let b:MarkMargin = matchadd('ColorColumn', '\%81v\s*\S', 100)
+    endif
+endfunction
+
+augroup MarkMargin
+    autocmd!
+    autocmd  BufEnter  *       :call MarkMargin(1)
+    autocmd  BufEnter  *.vp*   :call MarkMargin(0)
+augroup END

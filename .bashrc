@@ -95,7 +95,9 @@ grab() {
             sudo chown -R ${USER} ${1:-.}
         }
 
-
+livehosts() {
+    nmap -b -sn $1 -oG - | awk '/Up$/{print $2}'
+}
 
 # Use the best version of pico installed
 
