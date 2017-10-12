@@ -357,12 +357,3 @@ function __setprompt
 esac
 }
 PROMPT_COMMAND='__setprompt'
-read -p "Do you want to run tmux? (Y/N) " -n -r
-echo
-if [[ !$REPLY =~ ^[Yy]$ ]]
-then
-    if command -v tmux>/dev/null;
-    then
-        [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux
-    fi
-fi
